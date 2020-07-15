@@ -18,18 +18,29 @@
         let ctx = canvas.getContext("2d");
         ctx.fillStyle = "black";
         let painting = false;
-        canvas.onmousemove = (e) => {
-            if (painting) {
+        let isTouchDevice = "ontouchstart" in document.documentElement;
+        if (isTouchDevice) {
+            canvas.ontouchmove = (e) => {
+                let x = e.touches[0].clientX;
+                let y = e.touches[0].clientY;
                 ctx.beginPath();
-                ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI);
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
                 ctx.fill();
             }
-        }
-        canvas.onmousedown = () => {
-            painting = true;
-        }
-        canvas.onmouseup = () => {
-            painting = false;
+        } else {
+            canvas.onmousemove = (e) => {
+                if (painting === true) {
+                    ctx.beginPath();
+                    ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+            }
+            canvas.onmousedown = () => {
+                painting = true;
+            }
+            canvas.onmouseup = () => {
+                painting = false;
+            }
         }
     </script>
 </body>
