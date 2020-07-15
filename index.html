@@ -10,19 +10,26 @@
 </head>
 
 <body>
-    <div id="canvas"></div>
+    <canvas id="canvas"></canvas>
     <script>
-        canvas.onclick = (e) => {
-            let div = document.createElement("div");
-            canvas.appendChild(div);
-            div.style.position = "absolute";
-            div.style.left = e.clientX + "px";
-            div.style.top = e.clientY + "px";
-            div.style.width = "6px";
-            div.style.height = "6px";
-            div.style.background = "black";
-            div.style.marginLeft = "-3px";
-            div.style.marginTop = "-3px";
+        let canvas = document.getElementById("canvas");
+        canvas.width = document.documentElement.clientWidth;
+        canvas.height = document.documentElement.clientHeight;
+        let ctx = canvas.getContext("2d");
+        ctx.fillStyle = "black";
+        let painting = false;
+        canvas.onmousemove = (e) => {
+            if (painting) {
+                ctx.beginPath();
+                ctx.arc(e.clientX, e.clientY, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+        }
+        canvas.onmousedown = () => {
+            painting = true;
+        }
+        canvas.onmouseup = () => {
+            painting = false;
         }
     </script>
 </body>
